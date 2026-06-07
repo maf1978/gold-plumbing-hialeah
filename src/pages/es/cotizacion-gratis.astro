@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Container from '../../components/ui/Container.astro';
+import QuoteForm from '../../components/ui/QuoteForm.astro';
+import { siteConfig } from '../../data/site';
+---
+
+<BaseLayout
+  title={`Cotización Gratis | ${siteConfig.businessName}`}
+  description="Reserve un plomero en Hialeah. Cotización gratis sin obligación. Le llamamos en 1 hora hábil. (305) 488-6833."
+  locale="es"
+  currentPath="/es/cotizacion-gratis"
+>
+  <section class="py-16 lg:py-24 bg-deep-blue text-white">
+    <Container narrow>
+      <h1 class="text-4xl sm:text-5xl font-black uppercase tracking-tight mb-4">Reserve un Plomero</h1>
+      <p class="text-white/85 text-lg">Cotización gratis. Sin obligación. Le llamamos dentro de 1 hora hábil.</p>
+    </Container>
+  </section>
+  <section class="py-16 bg-gray-50">
+    <Container narrow>
+      <QuoteForm locale="es" variant="full" leadSource="es-free-quote" id="es-free-quote-form" />
+      <p class="text-center text-gray-500 text-sm mt-6">
+        ¿Prefiere llamar? <a href={`tel:${siteConfig.phoneRaw}`} class="text-accent font-bold">{siteConfig.phone}</a>
+      </p>
+    </Container>
+  </section>
+</BaseLayout>

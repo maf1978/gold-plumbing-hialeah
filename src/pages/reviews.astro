@@ -1,0 +1,22 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Testimonials from '../components/sections/Testimonials.astro';
+import FinalCTA from '../components/sections/FinalCTA.astro';
+import Container from '../components/ui/Container.astro';
+import { siteConfig } from '../data/site';
+---
+
+<BaseLayout
+  title={`Reviews | ${siteConfig.businessName} | Hialeah FL`}
+  description="Customer reviews for Gold Plumbing Hialeah. Licensed plumbers serving Hialeah, Miami Lakes, Miami Gardens, Doral & Hialeah Gardens."
+  currentPath="/reviews"
+>
+  <section class="py-16 bg-deep-blue text-white">
+    <Container narrow>
+      <h1 class="text-4xl sm:text-5xl font-black uppercase tracking-tight mb-4">Customer Reviews</h1>
+      <p class="text-white/80 text-lg">[CLIENT TO PROVIDE] — Add Google review count and rating once available.</p>
+    </Container>
+  </section>
+  <Testimonials />
+  <FinalCTA leadSource="reviews" />
+</BaseLayout>

@@ -1,0 +1,18 @@
+---
+import QuoteForm from '../ui/QuoteForm.astro';
+import { ui, type Locale } from '../../data/site';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'en' } = Astro.props;
+const t = ui[locale];
+---
+
+<section class="lg:hidden py-8 sm:py-10 bg-gray-50 border-b border-gray-100">
+  <div class="px-4 sm:px-6 max-w-lg mx-auto">
+    <h2 class="text-lg sm:text-xl font-black uppercase text-deep-blue mb-4 text-center">{t.bookPlumber}</h2>
+    <QuoteForm locale={locale} variant="compact" leadSource="mobile-home-quote" id="mobile-home-quote" />
+  </div>
+</section>

@@ -1,0 +1,94 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Container from '../../../components/ui/Container.astro';
+import FAQ from '../../../components/sections/FAQ.astro';
+import FinalCTA from '../../../components/sections/FinalCTA.astro';
+import SchemaScript from '../../../components/seo/SchemaScript.astro';
+import { siteConfig } from '../../../data/site';
+
+export async function getStaticPaths() {
+  const services = await getCollection('services');
+  return services.map((service) => ({
+    params: { slug: service.data.slug },
+    props: { service },
+  }));
+}
+
+const { service } = Astro.props;
+const d = service.data;
+const faqsForSchema = d.faqs.map((f) => ({ question: f.questionEs, answer: f.answerEs }));
+---
+
+<BaseLayout
+  title={`${d.titleEs} Hialeah FL | ${siteConfig.businessName}`}
+  description={d.seoDescription}
+  locale="es"
+  currentPath={`/es/servicios/${d.slug}`}
+  schemaType="Service"
+  schemaExtras={{
+    pageUrl: `${siteConfig.siteUrl}/es/servicios/${d.slug}`,
+    serviceName: d.titleEs,
+    serviceDescription: d.introEs,
+  }}
+>
+  <SchemaScript type="FAQPage" faqs={faqsForSchema} />
+
+  <section class="py-16 bg-deep-blue text-white">
+    <Container>
+      <h1 class="text-4xl font-black uppercase mb-4">{d.titleEs} en Hialeah, FL</h1>
+      <p class="text-xl text-accent font-semibold mb-4">{d.hookEs}</p>
+      <p class="text-white/85 text-lg max-w-3xl">{d.introEs}</p>
+      <a href={`tel:${siteConfig.phoneRaw}`} class="inline-flex mt-6 px-6 py-3 bg-accent text-white font-bold rounded-full uppercase text-sm">
+        {siteConfig.phone}
+      </a>
+    </Container>
+  </section>
+
+  <section class="py-12 bg-amber-50">
+    <Container narrow>
+      <p class="text-deep-blue font-medium italic">"{d.problemStatementEs}"</p>
+    </Container>
+  </section>
+
+  <section class="py-16 bg-white">
+    <Container>
+      <div class="grid lg:grid-cols-2 gap-12">
+        <div>
+          <h2 class="text-2xl font-black uppercase text-deep-blue mb-6">Qué Incluye</h2>
+          <ul class="space-y-3">
+            {d.includedEs.map((item) => (
+              <li class="flex gap-3 text-gray-700"><span class="text-accent">✓</span>{item}</li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <h2 class="text-2xl font-black uppercase text-deep-blue mb-6">Señales de Que Lo Necesita</h2>
+          <ul class="space-y-3">
+            {d.signsYouNeedEs.map((item) => (
+              <li class="flex gap-3 text-gray-700"><span class="text-accent">→</span>{item}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  <section class="py-16 bg-gray-50">
+    <Container>
+      <h2 class="text-2xl font-black uppercase text-deep-blue mb-10 text-center">Nuestro Proceso</h2>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {d.processSteps.map((step, i) => (
+          <div class="bg-white rounded-xl p-6">
+            <div class="w-10 h-10 rounded-full bg-accent text-white font-bold flex items-center justify-center mb-3">{i + 1}</div>
+            <h3 class="font-bold text-deep-blue mb-2">{step.titleEs}</h3>
+            <p class="text-gray-600 text-sm">{step.descriptionEs}</p>
+          </div>
+        ))}
+      </div>
+    </Container>
+  </section>
+
+  <FAQ locale="es" faqs={d.faqs} />
+  <FinalCTA locale="es" leadSource={`es-service-${d.slug}`} />
+</BaseLayout>

@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Container from '../../components/ui/Container.astro';
+import QuoteForm from '../../components/ui/QuoteForm.astro';
+import { siteConfig } from '../../data/site';
+---
+
+<BaseLayout
+  title={`Contacto | ${siteConfig.businessName}`}
+  description="Contacte a Gold Plumbing Hialeah. Llame al (305) 488-6833 o reserve en línea. Respuesta en 1 hora hábil."
+  locale="es"
+  currentPath="/es/contact"
+>
+  <section class="py-16 bg-deep-blue text-white">
+    <Container>
+      <h1 class="text-4xl font-black uppercase mb-4">Contacto</h1>
+      <p class="text-white/80 text-lg">Llame, escriba o reserve en línea.</p>
+    </Container>
+  </section>
+  <section class="py-16 bg-white">
+    <Container>
+      <div class="grid lg:grid-cols-2 gap-12">
+        <div class="space-y-6">
+          <div>
+            <h2 class="text-sm font-bold uppercase text-gray-500 mb-1">Teléfono</h2>
+            <a href={`tel:${siteConfig.phoneRaw}`} class="text-2xl font-black text-accent">{siteConfig.phone}</a>
+          </div>
+          <div>
+            <h2 class="text-sm font-bold uppercase text-gray-500 mb-1">Correo</h2>
+            <a href={`mailto:${siteConfig.email}`} class="text-lg text-deep-blue">{siteConfig.email}</a>
+          </div>
+        </div>
+        <QuoteForm locale="es" variant="full" leadSource="es-contact" id="es-contact-form" />
+      </div>
+    </Container>
+  </section>
+</BaseLayout>

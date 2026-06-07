@@ -1,0 +1,46 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/sections/Hero.astro';
+import ServiceIconBar from '../../components/sections/ServiceIconBar.astro';
+import PainSection from '../../components/sections/PainSection.astro';
+import ServicesGrid from '../../components/sections/ServicesGrid.astro';
+import WhyUs from '../../components/sections/WhyUs.astro';
+import ServiceAreas from '../../components/sections/ServiceAreas.astro';
+import Process from '../../components/sections/Process.astro';
+import Testimonials from '../../components/sections/Testimonials.astro';
+import FinalCTA from '../../components/sections/FinalCTA.astro';
+import MobileQuoteStrip from '../../components/sections/MobileQuoteStrip.astro';
+import FAQ from '../../components/sections/FAQ.astro';
+import LocalSEO from '../../components/sections/LocalSEO.astro';
+import SchemaScript from '../../components/seo/SchemaScript.astro';
+import { pricingFaqs } from '../../data/pricingFaqs';
+import { siteConfig } from '../../data/site';
+
+const homeFaqsForSchema = pricingFaqs.en.map((f) => ({
+  question: f.questionEs ?? f.question,
+  answer: f.answerEs ?? f.answer,
+}));
+---
+
+<BaseLayout
+  title={`Plomero Hialeah FL | ${siteConfig.businessName}`}
+  description="Plomero en Hialeah, FL — plomería cerca de mí para drenajes, calentadores, fugas y emergencias 24/7. Precios claros. Se habla español. (305) 488-6833."
+  locale="es"
+  transparentHeader
+  currentPath="/es/"
+  schemaType="LocalBusiness"
+>
+  <Hero locale="es" />
+  <ServiceIconBar locale="es" />
+  <MobileQuoteStrip locale="es" />
+  <PainSection locale="es" />
+  <ServicesGrid locale="es" />
+  <WhyUs locale="es" />
+  <ServiceAreas locale="es" />
+  <Process locale="es" />
+  <Testimonials locale="es" />
+  <LocalSEO locale="es" />
+  <FAQ faqs={pricingFaqs.en} title="Costos de Plomería y Preguntas Frecuentes en Hialeah" />
+  <FinalCTA locale="es" leadSource="es-home-final-cta" />
+  <SchemaScript type="FAQPage" faqs={homeFaqsForSchema} />
+</BaseLayout>

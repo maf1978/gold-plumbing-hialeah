@@ -1,0 +1,47 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Container from '../../components/ui/Container.astro';
+import SectionHeading from '../../components/ui/SectionHeading.astro';
+import FinalCTA from '../../components/sections/FinalCTA.astro';
+import { siteConfig } from '../../data/site';
+
+const services = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<BaseLayout
+  title={`Plumbing Services Hialeah FL | ${siteConfig.businessName}`}
+  description="Full plumbing services in Hialeah: drain cleaning, water heaters, leak repair, repiping, fixtures & 24/7 emergencies. Upfront pricing. Free quotes."
+  currentPath="/services"
+  schemaExtras={{
+    breadcrumbs: [
+      { name: 'Home', url: `${siteConfig.siteUrl}/` },
+      { name: 'Services', url: `${siteConfig.siteUrl}/services` },
+    ],
+  }}
+>
+  <section class="py-16 lg:py-24 bg-deep-blue text-white">
+    <Container>
+      <h1 class="text-4xl sm:text-5xl font-black uppercase tracking-tight mb-4">Plumbing Services in Hialeah, FL</h1>
+      <p class="text-white/80 text-lg max-w-2xl">Residential and commercial plumbing — each service backed by upfront pricing, licensed plumbers, and bilingual support.</p>
+    </Container>
+  </section>
+
+  <section class="py-16 bg-white">
+    <Container>
+      <div class="grid md:grid-cols-2 gap-8">
+        {services.map((service) => (
+          <article class="border border-gray-100 rounded-2xl p-8 hover:shadow-lg transition">
+            <h2 class="text-2xl font-bold text-deep-blue mb-3">
+              <a href={`/services/${service.data.slug}`} class="hover:text-accent transition">{service.data.title}</a>
+            </h2>
+            <p class="text-gray-600 mb-4 leading-relaxed">{service.data.intro}</p>
+            <a href={`/services/${service.data.slug}`} class="text-accent font-bold uppercase text-sm tracking-wide">Learn More →</a>
+          </article>
+        ))}
+      </div>
+    </Container>
+  </section>
+
+  <FinalCTA leadSource="services-hub" />
+</BaseLayout>

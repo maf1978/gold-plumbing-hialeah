@@ -1,0 +1,74 @@
+---
+import { siteConfig, type Locale } from '../../data/site';
+import Container from '../ui/Container.astro';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'en' } = Astro.props;
+const prefix = locale === 'es' ? '/es' : '';
+
+const serviceLinks = [
+  { slug: 'drain-cleaning', en: 'Drain Cleaning', es: 'Limpieza de Drenajes' },
+  { slug: 'water-heaters', en: 'Water Heater Repair', es: 'Reparación de Calentadores' },
+  { slug: 'leak-repair', en: 'Slab Leak Repair', es: 'Reparación de Fugas en Losa' },
+  { slug: 'sewer-repair', en: 'Sewer Repair', es: 'Reparación de Alcantarillado' },
+  { slug: 'emergency-plumbing', en: '24 Hour Plumber', es: 'Plomero 24 Horas' },
+];
+
+const cityLinks = siteConfig.serviceArea.map((a) => ({
+  slug: a.slug,
+  label: `${a.city}, FL`,
+}));
+---
+
+<section class="py-14 lg:py-16 bg-white border-t border-gray-100">
+  <Container>
+    <h2 class="text-2xl font-black uppercase text-deep-blue mb-3">
+      {locale === 'es' ? 'Plomero Cerca de Mí en Hialeah y Miami-Dade' : 'Plumber Near Me in Hialeah & Miami-Dade'}
+    </h2>
+    <p class="text-gray-600 max-w-3xl leading-relaxed mb-8">
+      {locale === 'es'
+        ? 'Gold Plumbing Hialeah es su plomero local para reparaciones residenciales y comerciales. Servimos Hialeah, Hialeah Gardens, Miami Lakes, Miami Gardens y Doral con precios claros, respuesta rápida y equipo bilingüe.'
+        : 'Gold Plumbing Hialeah is your local plumber for residential and commercial repairs across Miami-Dade. We serve Hialeah, Hialeah Gardens, Miami Lakes, Miami Gardens, and Doral with upfront pricing, fast response, and bilingual crews.'}
+    </p>
+
+    <div class="grid md:grid-cols-2 gap-10">
+      <div>
+        <h3 class="font-bold text-deep-blue mb-3 uppercase text-sm tracking-wide">
+          {locale === 'es' ? 'Servicios Populares' : 'Popular Services'}
+        </h3>
+        <ul class="flex flex-wrap gap-2">
+          {serviceLinks.map((s) => (
+            <li>
+              <a
+                href={`${prefix}/services/${s.slug}`}
+                class="inline-block px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-full text-sm text-deep-blue hover:border-accent hover:text-accent transition"
+              >
+                {locale === 'es' ? s.es : s.en}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <h3 class="font-bold text-deep-blue mb-3 uppercase text-sm tracking-wide">
+          {locale === 'es' ? 'Áreas de Servicio' : 'Service Areas'}
+        </h3>
+        <ul class="flex flex-wrap gap-2">
+          {cityLinks.map((c) => (
+            <li>
+              <a
+                href={`${prefix}/plumbing-${c.slug}`}
+                class="inline-block px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-full text-sm text-deep-blue hover:border-accent hover:text-accent transition"
+              >
+                {locale === 'es' ? `Plomero ${c.label}` : `Plumber ${c.label}`}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </Container>
+</section>

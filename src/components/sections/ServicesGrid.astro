@@ -1,0 +1,40 @@
+---
+import { getCollection } from 'astro:content';
+import { ui, type Locale } from '../../data/site';
+import Container from '../ui/Container.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'en' } = Astro.props;
+const t = ui[locale];
+const prefix = locale === 'es' ? '/es' : '';
+const services = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<section class="py-16 lg:py-24 bg-gray-50">
+  <Container>
+    <SectionHeading title={t.ourServices} subtitle={locale === 'es' ? 'Soluciones de plomería para hogares y negocios en Miami-Dade' : 'Plumbing solutions for homes and businesses across Miami-Dade'} />
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
+      {services.map((service) => (
+        <a
+          href={`${prefix}/services/${service.data.slug}`}
+          class="group bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-lg hover:border-accent/30 transition"
+        >
+          <h3 class="text-xl font-bold text-deep-blue group-hover:text-accent transition mb-2">
+            {locale === 'es' ? service.data.titleEs : service.data.title}
+          </h3>
+          <p class="text-gray-600 text-sm leading-relaxed mb-4">
+            {locale === 'es' ? service.data.hookEs : service.data.hook}
+          </p>
+          <span class="text-accent font-semibold text-sm uppercase tracking-wide">{t.learnMore} →</span>
+        </a>
+      ))}
+    </div>
+    <div class="text-center mt-10">
+      <a href={`${prefix}/services`} class="text-accent font-bold uppercase tracking-wide hover:underline">{t.viewAllServices}</a>
+    </div>
+  </Container>
+</section>

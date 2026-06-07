@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/sections/Hero.astro';
+import ServiceIconBar from '../components/sections/ServiceIconBar.astro';
+import PainSection from '../components/sections/PainSection.astro';
+import ServicesGrid from '../components/sections/ServicesGrid.astro';
+import WhyUs from '../components/sections/WhyUs.astro';
+import ServiceAreas from '../components/sections/ServiceAreas.astro';
+import Process from '../components/sections/Process.astro';
+import Testimonials from '../components/sections/Testimonials.astro';
+import FinalCTA from '../components/sections/FinalCTA.astro';
+import MobileQuoteStrip from '../components/sections/MobileQuoteStrip.astro';
+import FAQ from '../components/sections/FAQ.astro';
+import LocalSEO from '../components/sections/LocalSEO.astro';
+import SchemaScript from '../components/seo/SchemaScript.astro';
+import { pricingFaqs } from '../data/pricingFaqs';
+import { siteConfig } from '../data/site';
+
+const homeFaqsForSchema = pricingFaqs.en.map((f) => ({ question: f.question, answer: f.answer }));
+---
+
+<BaseLayout
+  title={`Plumber Hialeah FL | ${siteConfig.businessName}`}
+  description="Licensed plumber in Hialeah, FL — plumber near me for drain cleaning, water heater repair, leak repair & 24/7 emergencies. Bilingual. Free quote: (305) 488-6833."
+  transparentHeader
+  currentPath="/"
+  schemaType="LocalBusiness"
+>
+  <Hero locale="en" />
+  <ServiceIconBar locale="en" />
+  <MobileQuoteStrip locale="en" />
+  <PainSection locale="en" />
+  <ServicesGrid locale="en" />
+  <WhyUs locale="en" />
+  <ServiceAreas locale="en" />
+  <Process locale="en" />
+  <Testimonials locale="en" />
+  <LocalSEO locale="en" />
+  <FAQ faqs={pricingFaqs.en} title="Plumbing Costs & FAQs in Hialeah" />
+  <FinalCTA locale="en" leadSource="home-final-cta" />
+  <SchemaScript type="FAQPage" faqs={homeFaqsForSchema} />
+</BaseLayout>

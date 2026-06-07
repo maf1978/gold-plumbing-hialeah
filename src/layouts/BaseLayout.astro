@@ -1,0 +1,80 @@
+---
+import '../styles/global.css';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+import MobileCTABar from '../components/layout/MobileCTABar.astro';
+import SchemaScript from '../components/seo/SchemaScript.astro';
+import { siteConfig, type Locale } from '../data/site';
+
+interface Props {
+  title: string;
+  description: string;
+  locale?: Locale;
+  transparentHeader?: boolean;
+  currentPath?: string;
+  schemaType?: 'LocalBusiness' | 'Service' | 'FAQPage' | 'BreadcrumbList';
+  schemaExtras?: {
+    pageUrl?: string;
+    serviceName?: string;
+    serviceDescription?: string;
+    faqs?: { question: string; answer: string }[];
+    breadcrumbs?: { name: string; url: string }[];
+  };
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description,
+  locale = 'en',
+  transparentHeader = false,
+  currentPath = Astro.url.pathname,
+  schemaType = 'LocalBusiness',
+  schemaExtras = {},
+  noindex = false,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, siteConfig.siteUrl).href;
+const altLocale = locale === 'en' ? 'es' : 'en';
+const altPath = locale === 'en'
+  ? (currentPath === '/' ? '/es/' : `/es${currentPath}`)
+  : (currentPath === '/es/' || currentPath === '/es' ? '/' : currentPath.replace(/^\/es/, '') || '/');
+---
+
+<!doctype html>
+<html lang={locale === 'es' ? 'es' : 'en'}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex,nofollow" />}
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="en" href={new URL(locale === 'en' ? currentPath : altPath, siteConfig.siteUrl).href} />
+    <link rel="alternate" hreflang="es" href={new URL(locale === 'es' ? currentPath : altPath, siteConfig.siteUrl).href} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={`${siteConfig.siteUrl}/images/hero-background.png`} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <SchemaScript type={schemaType} {...schemaExtras} />
+    {schemaExtras.breadcrumbs && (
+      <SchemaScript type="BreadcrumbList" breadcrumbs={schemaExtras.breadcrumbs} />
+    )}
+  </head>
+  <body class="antialiased bg-white pb-20 lg:pb-0">
+    <Header locale={locale} transparent={transparentHeader} currentPath={currentPath} />
+    <main>
+      <slot />
+    </main>
+    <Footer locale={locale} />
+    <MobileCTABar locale={locale} />
+  </body>
+</html>

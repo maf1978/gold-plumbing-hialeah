@@ -1,0 +1,36 @@
+---
+import { siteConfig, ui, type Locale } from '../../data/site';
+import Container from '../ui/Container.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'en' } = Astro.props;
+const t = ui[locale];
+---
+
+<section class="py-16 lg:py-24 bg-gray-50">
+  <Container>
+    <SectionHeading
+      title={t.serviceAreas}
+      subtitle={locale === 'es' ? 'Servimos Hialeah y comunidades cercanas en Miami-Dade' : 'Serving Hialeah and nearby Miami-Dade communities'}
+    />
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-12 max-w-4xl mx-auto">
+      {siteConfig.serviceArea.map((area) => (
+        <a
+          href={`/plumbing-${area.slug}`}
+          class="flex items-center justify-between bg-white rounded-xl px-5 py-4 border border-gray-100 hover:border-accent hover:shadow-md transition group"
+        >
+          <span class="font-bold text-deep-blue group-hover:text-accent transition">{area.city}, FL</span>
+          <span class="text-accent text-sm font-semibold">→</span>
+        </a>
+      ))}
+    </div>
+    <p class="text-center text-gray-500 text-sm mt-6">
+      {locale === 'es' ? 'Zips: ' : 'Zip codes: '}
+      {siteConfig.serviceArea.flatMap((a) => a.zipCodes).join(', ')}
+    </p>
+  </Container>
+</section>

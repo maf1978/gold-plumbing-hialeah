@@ -1,0 +1,46 @@
+---
+import { siteConfig, type Locale } from '../../data/site';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'en' } = Astro.props;
+const prefix = locale === 'es' ? '/es' : '';
+
+const icons: Record<string, string> = {
+  drain: 'M9 2v6l-2 2v8h10v-8l-2-2V2H9z',
+  heater: 'M4 6h16v12H4V6zm2 2v8h12V8H6z',
+  leak: 'M10 2c0 4-4 6-4 10a4 4 0 008 0c0-4-4-6-4-10z',
+  sewer: 'M4 14h16v2H4v-2zm2-8h12v6H6V6z',
+  repipe: 'M3 10h4v4H3v-4zm14 0h4v4h-4v-4zM10 8h4v8h-4V8z',
+  fixtures: 'M6 4h8v3H6V4zm0 5h8v7H6V9z',
+  emergency: 'M10 2l2 6h6l-5 4 2 6-5-4-5 4 2-6-5-4h6l2-6z',
+};
+---
+
+<section class="bg-white border-b border-gray-100 shadow-sm">
+  <div class="max-w-7xl mx-auto px-2 sm:px-4 lg:px-6">
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-px bg-gray-100 sm:divide-x-0 lg:divide-x lg:divide-gray-100 lg:gap-0 lg:bg-white">
+      {siteConfig.services.map((service) => (
+        <a
+          href={`${prefix}/services/${service.slug}`}
+          class="group flex flex-col items-center text-center py-5 sm:py-6 px-2 sm:px-3 bg-white hover:bg-gray-50 active:bg-gray-100 transition min-h-[100px] sm:min-h-[110px]"
+        >
+          <div class="w-12 h-12 sm:w-14 sm:h-14 mb-2 sm:mb-3 rounded-xl bg-deep-blue/5 flex items-center justify-center group-hover:bg-accent/10 transition">
+            <svg class="w-7 h-7 sm:w-8 sm:h-8 text-accent" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.5" />
+              <path d={icons[service.icon] || icons.drain} />
+            </svg>
+          </div>
+          <span class="font-bold text-xs sm:text-sm text-deep-blue group-hover:text-accent transition leading-tight">
+            {locale === 'es' ? service.titleEs : service.titleEn}
+          </span>
+          <span class="text-[10px] sm:text-xs text-gray-500 mt-0.5 leading-tight">
+            {locale === 'es' ? service.titleEn : service.titleEs}
+          </span>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,87 @@
+---
+import { siteConfig, ui, localePath, type Locale } from '../../data/site';
+import { getCollection } from 'astro:content';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'en' } = Astro.props;
+const t = ui[locale];
+const prefix = locale === 'es' ? '/es' : '';
+const services = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
+const year = new Date().getFullYear();
+---
+
+<footer class="bg-deep-blue text-white/80 pt-16 pb-[calc(5.5rem+env(safe-area-inset-bottom,0px))] lg:pb-12">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+      <div>
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 rounded-lg bg-gold/20 border border-gold/40 flex items-center justify-center">
+            <span class="text-gold font-black">GP</span>
+          </div>
+          <span class="text-white font-bold">{siteConfig.businessName}</span>
+        </div>
+        <p class="text-sm mb-4">{siteConfig.tagline}</p>
+        {siteConfig.licenses.map((lic) => (
+          <p class="text-xs text-white/50">{lic.type}: {lic.number}</p>
+        ))}
+      </div>
+
+      <div>
+        <h4 class="text-white font-bold mb-4 uppercase text-sm tracking-wide">{t.services}</h4>
+        <ul class="space-y-2 text-sm">
+          {services.map((s) => (
+            <li>
+              <a href={`${prefix}/services/${s.data.slug}`} class="hover:text-accent transition">
+                {locale === 'es' ? s.data.titleEs : s.data.title}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="text-white font-bold mb-4 uppercase text-sm tracking-wide">{t.serviceAreas}</h4>
+        <ul class="space-y-2 text-sm">
+          {siteConfig.serviceArea.map((area) => (
+            <li>
+              <a href={`/plumbing-${area.slug}`} class="hover:text-accent transition">
+                {area.city}, FL
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="text-white font-bold mb-4 uppercase text-sm tracking-wide">{t.contact}</h4>
+        <ul class="space-y-3 text-sm">
+          <li>
+            <a href={`tel:${siteConfig.phoneRaw}`} class="text-accent font-bold hover:underline text-lg">
+              {siteConfig.phone}
+            </a>
+          </li>
+          <li>
+            <a href={`mailto:${siteConfig.email}`} class="hover:text-white transition">{siteConfig.email}</a>
+          </li>
+          <li>
+            {siteConfig.address.street}<br />
+            {siteConfig.address.city}, {siteConfig.address.state} {siteConfig.address.zip}
+          </li>
+          <li class="pt-2">
+            <a href={localePath('/free-quote', locale)} class="inline-block px-5 py-2 bg-accent text-white font-bold text-xs uppercase rounded-full hover:opacity-90">
+              {t.bookPlumber}
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="border-t border-white/10 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-white/50">
+      <p>&copy; {year} {siteConfig.businessName}. {locale === 'es' ? 'Todos los derechos reservados.' : 'All rights reserved.'}</p>
+      <p>{t.trustBar}</p>
+    </div>
+  </div>
+</footer>

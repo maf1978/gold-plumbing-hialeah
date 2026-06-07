@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/ui/Container.astro';
+import QuoteForm from '../components/ui/QuoteForm.astro';
+import { siteConfig } from '../data/site';
+---
+
+<BaseLayout
+  title={`Free Quote | ${siteConfig.businessName} | Hialeah FL`}
+  description="Book a free plumbing quote in Hialeah, FL. Drain cleaning, water heaters, leaks, repiping & emergencies. We call back within 1 business hour."
+  currentPath="/free-quote"
+>
+  <section class="py-16 lg:py-24 bg-deep-blue text-white">
+    <Container narrow>
+      <h1 class="text-4xl sm:text-5xl font-black uppercase tracking-tight mb-4">Book a Plumber</h1>
+      <p class="text-white/85 text-lg">Free quote. No obligation. We call you within 1 business hour to confirm your appointment.</p>
+      <p class="text-white/60 mt-2 text-sm">Se Habla Español — formulario disponible en español en /es/cotizacion-gratis</p>
+    </Container>
+  </section>
+
+  <section class="py-16 bg-gray-50">
+    <Container narrow>
+      <QuoteForm variant="full" leadSource="free-quote-page" id="free-quote-form" />
+      <p class="text-center text-gray-500 text-sm mt-6">
+        Prefer to call? <a href={`tel:${siteConfig.phoneRaw}`} class="text-accent font-bold hover:underline">{siteConfig.phone}</a>
+      </p>
+    </Container>
+  </section>
+</BaseLayout>

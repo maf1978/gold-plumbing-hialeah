@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Container from '../../components/ui/Container.astro';
+import WhyUs from '../../components/sections/WhyUs.astro';
+import Process from '../../components/sections/Process.astro';
+import FinalCTA from '../../components/sections/FinalCTA.astro';
+import { siteConfig } from '../../data/site';
+---
+
+<BaseLayout
+  title={`Nosotros | ${siteConfig.businessName}`}
+  description="Gold Plumbing Hialeah — plomeros licenciados en Hialeah y Miami-Dade. Servicio bilingüe, precios claros, emergencias 24/7."
+  locale="es"
+  currentPath="/es/about"
+>
+  <section class="py-16 bg-deep-blue text-white">
+    <Container narrow>
+      <h1 class="text-4xl font-black uppercase mb-6">Sobre {siteConfig.businessName}</h1>
+      <p class="text-white/85 text-lg leading-relaxed mb-4">
+        Gold Plumbing Hialeah es una empresa de plomería local que sirve propietarios, condominios y comercios en Hialeah, Hialeah Gardens, Miami Lakes, Miami Gardens y Doral.
+      </p>
+      <p class="text-white/75 leading-relaxed">
+        Nuestra promesa: llegar a tiempo, explicar el problema claramente en inglés o español, cotizar el precio antes de empezar y arreglarlo bien la primera vez.
+      </p>
+    </Container>
+  </section>
+  <WhyUs locale="es" />
+  <Process locale="es" />
+  <FinalCTA locale="es" leadSource="es-about" />
+</BaseLayout>

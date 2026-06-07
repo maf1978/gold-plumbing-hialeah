@@ -1,0 +1,73 @@
+---
+import { siteConfig, ui, localePath, type Locale } from '../../data/site';
+import QuoteForm from '../ui/QuoteForm.astro';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'en' } = Astro.props;
+const t = ui[locale];
+const city = siteConfig.address.city.toUpperCase();
+---
+
+<section class="relative overflow-hidden min-h-[480px] sm:min-h-[520px] lg:min-h-[640px]">
+  <img
+    src="/images/hero-background.png"
+    alt="Licensed Gold Plumbing Hialeah plumber with service van in Hialeah Florida residential neighborhood"
+    class="absolute inset-0 w-full h-full object-cover object-[75%_center] sm:object-[70%_center] lg:object-right"
+    width="1920"
+    height="800"
+    loading="eager"
+    fetchpriority="high"
+  />
+
+  <!-- Mobile: heavy overlay for text readability over photo -->
+  <div class="absolute inset-0 bg-gradient-to-b from-deep-blue/95 via-deep-blue/90 to-deep-blue/75 sm:bg-gradient-to-r sm:from-deep-blue sm:via-deep-blue/90 sm:to-deep-blue/40 lg:via-deep-blue/75 lg:to-transparent"></div>
+
+  <div class="relative z-10 flex flex-col justify-center min-h-[480px] sm:min-h-[520px] lg:min-h-[640px] px-4 sm:px-8 lg:px-16 py-10 sm:py-12 lg:py-20 w-full max-w-full lg:max-w-xl xl:max-w-2xl">
+    <h1 class="text-[1.65rem] leading-tight sm:text-4xl lg:text-5xl xl:text-[3.25rem] font-black uppercase text-white tracking-tight mb-3 sm:mb-4 drop-shadow-sm">
+      {t.heroLine1}
+      <span class="block mt-0.5 sm:mt-1">
+        {t.heroLine2} <span class="text-accent">{city}</span>
+      </span>
+    </h1>
+
+    <p class="text-white/90 text-base sm:text-lg lg:text-xl font-medium mb-0.5 sm:mb-1">{t.heroSubEn}</p>
+    <p class="text-white/70 text-sm sm:text-base lg:text-lg italic mb-5 sm:mb-6">{t.heroSubEs}</p>
+
+    <ul class="flex flex-col sm:flex-row sm:flex-wrap gap-y-2 gap-x-4 sm:gap-x-5 mb-6 sm:mb-8">
+      {siteConfig.trustBadges.map((badge) => (
+        <li class="flex items-center gap-2 text-white/90 text-xs sm:text-sm font-medium">
+          <svg class="w-4 h-4 sm:w-5 sm:h-5 text-accent shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+          </svg>
+          {locale === 'es' ? badge.es : badge.en}
+        </li>
+      ))}
+    </ul>
+
+    <div class="flex flex-col gap-3 sm:flex-row sm:gap-4 mb-0 sm:mb-8">
+      <a
+        href={localePath('/free-quote', locale)}
+        class="inline-flex items-center justify-center min-h-[48px] px-6 sm:px-8 py-3.5 sm:py-4 bg-accent text-white font-bold uppercase tracking-wide rounded-full hover:opacity-90 active:scale-[0.98] transition shadow-xl shadow-accent/40 text-sm sm:text-base text-center"
+      >
+        <span class="sm:hidden">{t.bookPlumber}</span>
+        <span class="hidden sm:inline">{t.heroCta}</span>
+      </a>
+      <a
+        href={`tel:${siteConfig.phoneRaw}`}
+        class="inline-flex items-center justify-center min-h-[48px] gap-2 px-6 py-3.5 border border-white/30 text-white font-semibold rounded-full hover:bg-white/10 active:scale-[0.98] transition lg:hidden"
+      >
+        <svg class="w-4 h-4 text-accent shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+          <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+        </svg>
+        {siteConfig.phone}
+      </a>
+    </div>
+
+    <div class="hidden lg:block max-w-md mt-8">
+      <QuoteForm locale={locale} variant="hero" leadSource="home-hero" id="hero-quote-form" />
+    </div>
+  </div>
+</section>

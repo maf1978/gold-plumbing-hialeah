@@ -1,0 +1,85 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/ui/Container.astro';
+import FAQ from '../components/sections/FAQ.astro';
+import FinalCTA from '../components/sections/FinalCTA.astro';
+import SchemaScript from '../components/seo/SchemaScript.astro';
+import { siteConfig } from '../data/site';
+
+export async function getStaticPaths() {
+  const locations = await getCollection('locations');
+  return locations.map((location) => ({
+    params: { area: location.data.slug },
+    props: { location },
+  }));
+}
+
+const { location } = Astro.props;
+const d = location.data;
+const services = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
+const pageUrl = `${siteConfig.siteUrl}/plumbing-${d.slug}`;
+const faqsForSchema = d.faqs.map((f) => ({ question: f.question, answer: f.answer }));
+const nearby = d.nearbyAreas
+  .map((slug) => siteConfig.serviceArea.find((a) => a.slug === slug))
+  .filter(Boolean);
+---
+
+<BaseLayout
+  title={d.seoTitle}
+  description={d.seoDescription}
+  currentPath={`/plumbing-${d.slug}`}
+  schemaExtras={{
+    breadcrumbs: [
+      { name: 'Home', url: `${siteConfig.siteUrl}/` },
+      { name: 'Service Areas', url: `${siteConfig.siteUrl}/service-areas` },
+      { name: `${d.city}, FL`, url: pageUrl },
+    ],
+  }}
+>
+  <SchemaScript type="FAQPage" faqs={faqsForSchema} />
+
+  <section class="py-16 lg:py-20 bg-deep-blue text-white">
+    <Container>
+      <nav class="text-sm text-white/60 mb-4">
+        <a href="/" class="hover:text-white">Home</a> / <a href="/service-areas" class="hover:text-white">Service Areas</a> / <span class="text-white">{d.city}</span>
+      </nav>
+      <h1 class="text-4xl sm:text-5xl font-black uppercase tracking-tight mb-4">Plumber in {d.city}, {d.state}</h1>
+      <p class="text-xl text-accent font-semibold mb-4">{d.localHook}</p>
+      <p class="text-white/85 text-lg max-w-3xl leading-relaxed">{d.localBody}</p>
+      <p class="mt-4 text-white/60 text-sm">Zip codes: {d.zipCodes.join(', ')}</p>
+    </Container>
+  </section>
+
+  <section class="py-16 bg-white">
+    <Container>
+      <h2 class="text-2xl font-black uppercase text-deep-blue mb-8">Plumbing Services in {d.city}</h2>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {services.map((s) => (
+          <a href={`/services/${s.data.slug}`} class="p-5 border border-gray-100 rounded-xl hover:border-accent hover:shadow-md transition group">
+            <h3 class="font-bold text-deep-blue group-hover:text-accent transition">{s.data.title}</h3>
+            <p class="text-gray-500 text-sm mt-1">{s.data.targetKeyword}</p>
+          </a>
+        ))}
+      </div>
+    </Container>
+  </section>
+
+  {nearby.length > 0 && (
+    <section class="py-12 bg-gray-50">
+      <Container>
+        <h2 class="text-lg font-bold text-deep-blue mb-4">Nearby Service Areas</h2>
+        <div class="flex flex-wrap gap-3">
+          {nearby.map((area) => area && (
+            <a href={`/plumbing-${area.slug}`} class="px-4 py-2 bg-white border border-gray-200 rounded-full text-sm font-medium hover:border-accent transition">
+              {area.city}, FL
+            </a>
+          ))}
+        </div>
+      </Container>
+    </section>
+  )}
+
+  <FAQ faqs={d.faqs} />
+  <FinalCTA leadSource={`area-${d.slug}`} />
+</BaseLayout>

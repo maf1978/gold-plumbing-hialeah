@@ -1,0 +1,122 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Container from '../../components/ui/Container.astro';
+import FAQ from '../../components/sections/FAQ.astro';
+import FinalCTA from '../../components/sections/FinalCTA.astro';
+import SchemaScript from '../../components/seo/SchemaScript.astro';
+import { siteConfig } from '../../data/site';
+
+export async function getStaticPaths() {
+  const services = await getCollection('services');
+  return services.map((service) => ({
+    params: { slug: service.data.slug },
+    props: { service },
+  }));
+}
+
+const { service } = Astro.props;
+const d = service.data;
+const pageUrl = `${siteConfig.siteUrl}/services/${d.slug}`;
+const faqsForSchema = d.faqs.map((f) => ({ question: f.question, answer: f.answer }));
+---
+
+<BaseLayout
+  title={d.seoTitle}
+  description={d.seoDescription}
+  currentPath={`/services/${d.slug}`}
+  schemaType="Service"
+  schemaExtras={{
+    pageUrl,
+    serviceName: d.title,
+    serviceDescription: d.intro,
+    breadcrumbs: [
+      { name: 'Home', url: `${siteConfig.siteUrl}/` },
+      { name: 'Services', url: `${siteConfig.siteUrl}/services` },
+      { name: d.title, url: pageUrl },
+    ],
+  }}
+>
+  <SchemaScript type="FAQPage" faqs={faqsForSchema} />
+
+  <section class="py-10 sm:py-16 lg:py-20 bg-deep-blue text-white">
+    <Container>
+      <nav class="text-xs sm:text-sm text-white/60 mb-3 sm:mb-4" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-white">Home</a> / <a href="/services" class="hover:text-white">Services</a> / <span class="text-white">{d.title}</span>
+      </nav>
+      <h1 class="text-2xl sm:text-4xl lg:text-5xl font-black uppercase tracking-tight mb-3 sm:mb-4">{d.title} in Hialeah, FL</h1>
+      <p class="text-xl text-accent font-semibold mb-4">{d.hook}</p>
+      <p class="text-white/85 text-lg max-w-3xl leading-relaxed">{d.intro}</p>
+      <a href={`tel:${siteConfig.phoneRaw}`} class="inline-flex mt-6 px-6 py-3 bg-accent text-white font-bold rounded-full uppercase text-sm hover:opacity-90">
+        Call {siteConfig.phone}
+      </a>
+    </Container>
+  </section>
+
+  <section class="py-12 bg-amber-50 border-y border-amber-100">
+    <Container narrow>
+      <p class="text-deep-blue font-medium text-lg italic">"{d.problemStatement}"</p>
+    </Container>
+  </section>
+
+  <section class="py-16 bg-white">
+    <Container>
+      <div class="grid lg:grid-cols-2 gap-12">
+        <div>
+          <h2 class="text-2xl font-black uppercase text-deep-blue mb-6">What's Included</h2>
+          <ul class="space-y-3">
+            {d.included.map((item) => (
+              <li class="flex gap-3 text-gray-700">
+                <svg class="w-5 h-5 text-accent shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <h2 class="text-2xl font-black uppercase text-deep-blue mb-6">Signs You Need This Service</h2>
+          <ul class="space-y-3">
+            {d.signsYouNeed.map((item) => (
+              <li class="flex gap-3 text-gray-700">
+                <span class="text-accent font-bold">→</span>
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  <section class="py-16 bg-gray-50">
+    <Container>
+      <h2 class="text-2xl font-black uppercase text-deep-blue mb-10 text-center">Our Process</h2>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {d.processSteps.map((step, i) => (
+          <div class="bg-white rounded-xl p-6 border border-gray-100">
+            <div class="w-10 h-10 rounded-full bg-accent text-white font-bold flex items-center justify-center mb-3">{i + 1}</div>
+            <h3 class="font-bold text-deep-blue mb-2">{step.title}</h3>
+            <p class="text-gray-600 text-sm">{step.description}</p>
+          </div>
+        ))}
+      </div>
+    </Container>
+  </section>
+
+  <section class="py-16 bg-white">
+    <Container narrow>
+      <h2 class="text-2xl font-black uppercase text-deep-blue mb-8 text-center">Why Choose {siteConfig.businessName}</h2>
+      <ul class="grid sm:grid-cols-2 gap-4">
+        {d.whyUs.map((item) => (
+          <li class="flex gap-3 p-4 bg-gray-50 rounded-xl">
+            <svg class="w-5 h-5 text-gold shrink-0" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <span class="text-gray-700 text-sm">{item}</span>
+          </li>
+        ))}
+      </ul>
+    </Container>
+  </section>
+
+  <FAQ faqs={d.faqs} />
+  <FinalCTA leadSource={`service-${d.slug}`} />
+</BaseLayout>

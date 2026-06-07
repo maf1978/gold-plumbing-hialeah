@@ -1,0 +1,51 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/ui/Container.astro';
+import QuoteForm from '../components/ui/QuoteForm.astro';
+import { siteConfig } from '../data/site';
+---
+
+<BaseLayout
+  title={`Contact | ${siteConfig.businessName} | (305) 488-6833`}
+  description="Contact Gold Plumbing Hialeah for plumbing service, free quotes, and 24/7 emergencies. Call (305) 488-6833 or book online."
+  currentPath="/contact"
+>
+  <section class="py-16 lg:py-24 bg-deep-blue text-white">
+    <Container>
+      <h1 class="text-4xl sm:text-5xl font-black uppercase tracking-tight mb-4">Contact Us</h1>
+      <p class="text-white/80 text-lg max-w-xl">Call, email, or book online. We respond within 1 business hour.</p>
+    </Container>
+  </section>
+
+  <section class="py-16 bg-white">
+    <Container>
+      <div class="grid lg:grid-cols-2 gap-12">
+        <div>
+          <h2 class="text-2xl font-bold text-deep-blue mb-6">Get in Touch</h2>
+          <div class="space-y-6">
+            <div>
+              <h3 class="text-sm font-bold uppercase text-gray-500 mb-1">Phone</h3>
+              <a href={`tel:${siteConfig.phoneRaw}`} class="text-2xl font-black text-accent hover:underline">{siteConfig.phone}</a>
+            </div>
+            <div>
+              <h3 class="text-sm font-bold uppercase text-gray-500 mb-1">Email</h3>
+              <a href={`mailto:${siteConfig.email}`} class="text-lg text-deep-blue hover:text-accent">{siteConfig.email}</a>
+            </div>
+            <div>
+              <h3 class="text-sm font-bold uppercase text-gray-500 mb-1">Address</h3>
+              <p class="text-gray-700">
+                {siteConfig.address.street}<br />
+                {siteConfig.address.city}, {siteConfig.address.state} {siteConfig.address.zip}
+              </p>
+            </div>
+            <div>
+              <h3 class="text-sm font-bold uppercase text-gray-500 mb-1">Hours</h3>
+              <p class="text-gray-700">24/7 Emergency Service<br />Office: Mon–Sun</p>
+            </div>
+          </div>
+        </div>
+        <QuoteForm variant="full" leadSource="contact-page" id="contact-form" />
+      </div>
+    </Container>
+  </section>
+</BaseLayout>

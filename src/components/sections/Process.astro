@@ -1,0 +1,32 @@
+---
+import { siteConfig, ui, type Locale } from '../../data/site';
+import Container from '../ui/Container.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'en' } = Astro.props;
+const t = ui[locale];
+---
+
+<section id="how-it-works" class="py-16 lg:py-24 bg-white">
+  <Container>
+    <SectionHeading title={t.howItWorks} subtitle={locale === 'es' ? 'Cuatro pasos simples desde su llamada hasta la reparación' : 'Four simple steps from your call to the finished repair'} />
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mt-12">
+      {siteConfig.processSteps.map((step, i) => {
+        const s = locale === 'es' ? step.es : step.en;
+        return (
+          <div class="relative text-center">
+            <div class="w-14 h-14 mx-auto mb-4 rounded-full bg-accent text-white font-black text-xl flex items-center justify-center shadow-lg shadow-accent/30">
+              {i + 1}
+            </div>
+            <h3 class="font-bold text-deep-blue text-lg mb-2">{s.title}</h3>
+            <p class="text-gray-600 text-sm leading-relaxed">{s.description}</p>
+          </div>
+        );
+      })}
+    </div>
+  </Container>
+</section>

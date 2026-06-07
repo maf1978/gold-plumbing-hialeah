@@ -1,0 +1,19 @@
+---
+import { buildSchema } from '../../lib/schema';
+
+interface Props {
+  type: 'LocalBusiness' | 'Service' | 'FAQPage' | 'BreadcrumbList';
+  pageUrl?: string;
+  serviceName?: string;
+  serviceDescription?: string;
+  faqs?: { question: string; answer: string }[];
+  breadcrumbs?: { name: string; url: string }[];
+}
+
+const props = Astro.props;
+const schema = buildSchema(props);
+---
+
+{schema && (
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+)}

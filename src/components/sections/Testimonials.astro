@@ -1,0 +1,37 @@
+---
+import { ui, type Locale } from '../../data/site';
+import Container from '../ui/Container.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'en' } = Astro.props;
+const t = ui[locale];
+
+const placeholders = [
+  { name: 'Maria G.', city: 'Hialeah, FL', textEn: '[CLIENT TO PROVIDE] — Great service, fast response, and clear pricing. Our drain was cleared the same day.', textEs: '[CLIENT TO PROVIDE] — Excelente servicio, respuesta rápida y precios claros.' },
+  { name: 'Carlos R.', city: 'Miami Lakes, FL', textEn: '[CLIENT TO PROVIDE] — Water heater replaced professionally. Team spoke Spanish and explained everything.', textEs: '[CLIENT TO PROVIDE] — Calentador reemplazado profesionalmente. El equipo habló español y explicó todo.' },
+  { name: 'Jennifer M.', city: 'Doral, FL', textEn: '[CLIENT TO PROVIDE] — Emergency leak fixed at night. Upfront price, no surprises. Highly recommend.', textEs: '[CLIENT TO PROVIDE] — Fuga de emergencia arreglada de noche. Precio claro, sin sorpresas.' },
+];
+---
+
+<section class="py-16 lg:py-24 bg-white">
+  <Container>
+    <SectionHeading title={t.reviews} subtitle={locale === 'es' ? 'Lo que dicen nuestros clientes en Miami-Dade' : 'What our Miami-Dade customers say'} />
+    <div class="grid md:grid-cols-3 gap-6 mt-12">
+      {placeholders.map((item) => (
+        <blockquote class="bg-gray-50 rounded-2xl p-6 border border-gray-100">
+          <div class="flex gap-1 text-gold mb-3" aria-label="5 stars">
+            {[1, 2, 3, 4, 5].map(() => (
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            ))}
+          </div>
+          <p class="text-gray-600 text-sm leading-relaxed mb-4">"{locale === 'es' ? item.textEs : item.textEn}"</p>
+          <footer class="font-semibold text-deep-blue text-sm">{item.name} — {item.city}</footer>
+        </blockquote>
+      ))}
+    </div>
+  </Container>
+</section>
