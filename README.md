@@ -20,13 +20,38 @@ npm run build
 npm run preview
 ```
 
-Deploy to Netlify: connect repo, set `PUBLIC_QUOTE_ENDPOINT` in site environment variables, deploy.
+### Cloudflare Pages (production)
+
+**One-time setup**
+
+```bash
+npx wrangler login
+```
+
+**Deploy from your machine**
+
+```bash
+npm run deploy
+```
+
+**Or connect GitHub (recommended)**
+
+1. Cloudflare Dashboard → Workers & Pages → Create → Connect to Git
+2. Select `gold-plumbing-hialeah` repo
+3. Build settings:
+   - **Build command:** `npm run build`
+   - **Build output directory:** `dist`
+   - **Node version:** `22` (or use `.node-version`)
+4. Environment variables → add `PUBLIC_QUOTE_ENDPOINT` with your GHL webhook URL
+5. Save and deploy
+
+Preview URL format: `https://gold-plumbing-hialeah.pages.dev`
 
 ## GHL Webhook Setup
 
 1. In GoHighLevel: Settings → Integrations → Webhooks → Create inbound webhook
 2. Copy the webhook URL
-3. Set `PUBLIC_QUOTE_ENDPOINT` in `.env` (local) or Netlify env vars (production)
+3. Set `PUBLIC_QUOTE_ENDPOINT` in `.env` (local) or Cloudflare Pages env vars (production)
 4. Form POSTs JSON with: `full_name`, `phone`, `email`, `service`, `property_type`, `address_zip`, `message`, `lead_source`
 5. Wire webhook to Conversation AI workflow and sales pipeline
 

@@ -1,0 +1,7 @@
+name = "gold-plumbing-hialeah"
+compatibility_date = "2025-06-01"
+pages_build_output_dir = "dist"
+
+[vars]
+# Set PUBLIC_QUOTE_ENDPOINT in Cloudflare Pages dashboard for production builds.
+# Example: PUBLIC_QUOTE_ENDPOINT = "https://your-ghl-webhook-url"
